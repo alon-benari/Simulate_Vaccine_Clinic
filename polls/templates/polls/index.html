@@ -1,0 +1,71 @@
+<head>
+
+</head>
+
+{% extends "polls/base.html" %}
+
+{% block javascript %}
+<script>
+  $( document ).ready(function() {
+    console.log( "ready!" );
+    $("#id_admin_stations").change(function(){
+      console.log("hello")
+    })
+
+    $("params_form").submit(function(){
+      console.log("Button")
+      e.preventDefault();
+        // serialize the data for sending the form data.
+      var serializedData = $(this).serialize();
+        // make POST ajax call
+        $.ajax({
+          type:'POST',
+          url:"{% url 'post_params' %}",
+          data:serializedData,
+          success:function(res){
+            console.log(JSON.parse(res))
+          },
+          error:function(err){
+            console.log({err:err})
+          }
+        })
+    })
+
+});
+// $(document)
+// $("id_admin_tau").change(function(e){
+//   console.log($(this).val())
+  // e.preventDefaults();
+  // var serializedData = $(this).serialize()
+  // console.log(serializedData)
+
+</script>
+{% endblock javascript%}
+
+
+
+{% block content %}
+<!-- <form method = "post">
+  {% csrf_token%}
+  {{form.as_p}}
+  <input  id = "btn" type="submit" value ="post_params"></button>
+</form> -->
+ <div class="container-fluid">
+    <form method = "post" id="params-form" action = "post_params/">
+        <div class="row">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group col-4">
+                <label class="col-12">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <input  type="submit" class="btn btn-primary" value="Create Friend" />
+        </div>
+    <form>
+</div> 
+{% endblock content %}
+
+
+
+
